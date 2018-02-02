@@ -3,13 +3,11 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AnalizeIP {
     private final static String CONVERT_IP_ERROR="Ошибка в формате IP адресов";
 
-    public static void main(String[] args) throws IOException {
+    public void main(String[] args) throws IOException {
         Pair<String,String> range = getIPRange();
         try {
             printRange(range);
@@ -19,7 +17,7 @@ public class AnalizeIP {
 
     }
 
-    private static Pair<String,String> getIPRange() throws IOException {
+    private Pair<String,String> getIPRange() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("IP from: ");
         String ipBegin = br.readLine();
@@ -31,7 +29,7 @@ public class AnalizeIP {
         return new Pair<String,String>(ipBegin,ipEnd);
     }
 
-    private static void printRange(Pair<String,String> range) throws NumberFormatException{
+    public void printRange(Pair<String,String> range) throws NumberFormatException{
         int[] fromRangeInt = getIPContent(range.getKey());
         int[] toRangeInt = getIPContent(range.getValue());
 
@@ -44,7 +42,7 @@ public class AnalizeIP {
         }
     }
 
-    private static int[] getIPContent(String strIP) throws NumberFormatException{
+    public int[] getIPContent(String strIP) throws NumberFormatException{
         int[] ret = new int[4];
         int i=0;
         for (String str : strIP.split("\\.")) {

@@ -22,6 +22,16 @@ public class AnalizeIP {
     }
 
     static void printRange(Pair<String,String> range){
-
+        int[] fromRangeInt = new int[4];
+        int[] toRangeInt = new int[4];
+        int i=0;
+        for (String str:range.getKey().split(".")){
+            fromRangeInt[i++] = Integer.parseInt(str);
+        }
+        i=0;
+        for (String str:range.getValue().split(".")){
+            toRangeInt[i++] = Integer.parseInt(str);
+        }
+        
     }
 }

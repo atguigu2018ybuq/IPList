@@ -4,37 +4,42 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AnalizeIP {
+    private final static String CONVERT_IP_ERROR="Ошибка в формате IP адресов";
+    
     public static void main(String[] args) throws IOException {
-
         Pair<String,String> range = getIPRange();
         printRange(range);
     }
 
-    static Pair<String,String> getIPRange() throws IOException {
+    private static Pair<String,String> getIPRange() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("IP from: ");
         String ipBegin = br.readLine();
         System.out.print("IP to: ");
         String ipEnd = br.readLine();
 
-        //String ipBegin = "192.168.0.1";
-        //String ipEnd = "192.168.0.5";
+        //ipBegin = "192.168.0.1";
+        //ipEnd = "192.168.0.5";
         return new Pair<String,String>(ipBegin,ipEnd);
     }
 
-    static void printRange(Pair<String,String> range){
+    private static void printRange(Pair<String,String> range){
         int[] fromRangeInt = new int[4];
         int[] toRangeInt = new int[4];
-
         int i=0;
-        for (String str:range.getKey().split("\\.")){
-            fromRangeInt[i++] = Integer.parseInt(str);
-        }
-        i=0;
-        for (String str:range.getValue().split("\\.")){
-            toRangeInt[i++] = Integer.parseInt(str);
+        try {
+            for (String str : range.getKey().split("\\.")) {
+                fromRangeInt[i++] = Integer.parseInt(str);
+            }
+            i = 0;
+            for (String str : range.getValue().split("\\.")) {
+                toRangeInt[i++] = Integer.parseInt(str);
+            }
+        }catch(NumberFormatException e){
+            System.out.println(CONVERT_IP_ERROR);
         }
 
         //Ограничение диапазона, ip должен быть в пределах 1-255

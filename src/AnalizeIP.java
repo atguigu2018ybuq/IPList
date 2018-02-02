@@ -8,10 +8,15 @@ import java.util.Arrays;
 
 public class AnalizeIP {
     private final static String CONVERT_IP_ERROR="Ошибка в формате IP адресов";
-    
+
     public static void main(String[] args) throws IOException {
         Pair<String,String> range = getIPRange();
-        printRange(range);
+        try {
+            printRange(range);
+        }catch(NumberFormatException e){
+            System.out.println(CONVERT_IP_ERROR);
+        }
+
     }
 
     private static Pair<String,String> getIPRange() throws IOException {
@@ -26,21 +31,9 @@ public class AnalizeIP {
         return new Pair<String,String>(ipBegin,ipEnd);
     }
 
-    private static void printRange(Pair<String,String> range){
-        int[] fromRangeInt = new int[4];
-        int[] toRangeInt = new int[4];
-        int i=0;
-        try {
-            for (String str : range.getKey().split("\\.")) {
-                fromRangeInt[i++] = Integer.parseInt(str);
-            }
-            i = 0;
-            for (String str : range.getValue().split("\\.")) {
-                toRangeInt[i++] = Integer.parseInt(str);
-            }
-        }catch(NumberFormatException e){
-            System.out.println(CONVERT_IP_ERROR);
-        }
+    private static void printRange(Pair<String,String> range) throws NumberFormatException{
+        int[] fromRangeInt = getIPContent(range.getKey());
+        int[] toRangeInt = getIPContent(range.getValue());
 
         //Ограничение диапазона, ip должен быть в пределах 1-255
         fromRangeInt[3] = Math.max(1,fromRangeInt[3]);
@@ -49,5 +42,14 @@ public class AnalizeIP {
         for(int ip3=fromRangeInt[3]+1;ip3<toRangeInt[3];ip3++){
             System.out.println(String.format("%d.%d.%d.%d",fromRangeInt[0],fromRangeInt[1],fromRangeInt[2],ip3));
         }
+    }
+
+    private static int[] getIPContent(String strIP) throws NumberFormatException{
+        int[] ret = new int[4];
+        int i=0;
+        for (String str : strIP.split("\\.")) {
+            ret[i++] = Integer.parseInt(str);
+        }
+        return ret;
     }
 }
